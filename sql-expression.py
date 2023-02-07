@@ -59,7 +59,7 @@ with db.connect() as connection:
     # select_query = album_table.select().where(
     # album_table.c.ArtistId == 51)
 
-    # Query 6 - select all tracks where the composer is 'Queen' from the "Track" table 
+    # Query 6 - select all tracks where the composer is 'Queen' from the "Track" table
     select_query = track_table.select().where(track_table.c.Composer == "Queen")
 
     results = connection.execute(select_query)
