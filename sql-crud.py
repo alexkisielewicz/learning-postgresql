@@ -29,6 +29,14 @@ class Programmer(base):
     famous_for = Column(String)
 
 
+# create my custom class as a challenge
+class Places(base):
+    __tablename__ = "Places"
+    id = Column(Integer, primary_key=True)
+    country = Column(String)
+    city = Column(String)
+
+
 # instead of connecting to the database directly, we will ask for a session
 # create a new instance of sessionmaker, then point to our engine (the db)
 Session = sessionmaker(db)
@@ -39,61 +47,61 @@ session = Session()
 base.metadata.create_all(db)
 
 # creating records on our Programmer table
-ada_lovelace = Programmer(
-    first_name="Ada",
-    last_name="Lovelace",
-    gender="F",
-    nationality="British",
-    famous_for="First Programmer"
-)
+# ada_lovelace = Programmer(
+#     first_name="Ada",
+#     last_name="Lovelace",
+#     gender="F",
+#     nationality="British",
+#     famous_for="First Programmer"
+# )
 
-alan_turing = Programmer(
-    first_name="Alan",
-    last_name="Turing",
-    gender="M",
-    nationality="British",
-    famous_for="Modern Computing"
-)
+# alan_turing = Programmer(
+#     first_name="Alan",
+#     last_name="Turing",
+#     gender="M",
+#     nationality="British",
+#     famous_for="Modern Computing"
+# )
 
-grace_hopper = Programmer(
-    first_name="Grace",
-    last_name="Hopper",
-    gender="F",
-    nationality="American",
-    famous_for="COBOL language"
-)
+# grace_hopper = Programmer(
+#     first_name="Grace",
+#     last_name="Hopper",
+#     gender="F",
+#     nationality="American",
+#     famous_for="COBOL language"
+# )
 
-margaret_hamilton = Programmer(
-    first_name="Margaret",
-    last_name="Hamilton",
-    gender="F",
-    nationality="American",
-    famous_for="Apollo 11"
-)
+# margaret_hamilton = Programmer(
+#     first_name="Margaret",
+#     last_name="Hamilton",
+#     gender="F",
+#     nationality="American",
+#     famous_for="Apollo 11"
+# )
 
-bill_gates = Programmer(
-    first_name="Bill",
-    last_name="Gates",
-    gender="M",
-    nationality="American",
-    famous_for="Microsoft"
-)
+# bill_gates = Programmer(
+#     first_name="Bill",
+#     last_name="Gates",
+#     gender="M",
+#     nationality="American",
+#     famous_for="Microsoft"
+# )
 
-tim_berners_lee = Programmer(
-    first_name="Tim",
-    last_name="Berners-Lee",
-    gender="M",
-    nationality="British",
-    famous_for="World Wide Web"
-)
+# tim_berners_lee = Programmer(
+#     first_name="Tim",
+#     last_name="Berners-Lee",
+#     gender="M",
+#     nationality="British",
+#     famous_for="World Wide Web"
+# )
 
-alek_kisielewicz = Programmer(
-    first_name="Alek",
-    last_name="Kisielewicz",
-    gender="M",
-    nationality="Polish",
-    famous_for="Programmer in training"
-)
+# alek_kisielewicz = Programmer(
+#     first_name="Alek",
+#     last_name="Kisielewicz",
+#     gender="M",
+#     nationality="Polish",
+#     famous_for="Programmer in training"
+# )
 
 
 # add each instance of our pgogrammers to our session, simillar to github
@@ -170,3 +178,51 @@ alek_kisielewicz = Programmer(
 # now, create new table, perform CRUD functionality, practice !
 # (a table for favourite place - country, capital city,population etc.)
 # (a table for fafourite games - release ear, console, name, etc)
+
+
+santorini = Places(
+    country="Greece",
+    city="Oia"
+)
+
+chania = Places(
+    country="Greece",
+    city="Chania"
+)
+
+paris = Places(
+    country="France",
+    city="Paris"
+)
+
+# session.add(santorini)
+# session.add(chania)
+# session.add(paris)
+# session.commit()
+
+
+def print_all():
+    places = session.query(Places)
+    for place in places:
+        print(
+            place.id,
+            place.country,
+            place.city,
+            sep=" | "
+        )
+
+
+print_all()
+
+# delete chosen id
+user_choice = input("Please enter id to be deleted: ")
+remove_id = session.query(Places).filter_by(id=user_choice).first()
+print("You chose id: ", user_choice)
+confirmation = input("Are you sure you want to delete row with id " + user_choice + "?" + "(y/n): ")
+
+if confirmation.lower() == "y":
+    session.delete(remove_id)
+    session.commit()
+    print_all()
+else:
+    print("Aborting...")
